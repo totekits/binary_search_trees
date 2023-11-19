@@ -6,10 +6,15 @@ class Tree
   end
 
   def build_tree(array)
-    # sort elements in the array
-    # remove duplicates
+    return if array.empty?
+
     arr = array.sort.uniq
-    # build tree which returns level 0 root node
-    
+    return Node.new(arr[0]) if arr.size == 1
+
+    mid = arr.size / 2
+    root = Node.new(arr[mid])
+    root.left = build_tree(arr[0...mid])
+    root.right = build_tree(arr[mid..-1])
+    root
   end
 end
