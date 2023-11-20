@@ -18,8 +18,8 @@ class Tree
     root
   end
 
-  def traverse(node, value)
-    return if node.data == value
+  def insert(value, node = @root)
+    return if value == node.data
 
     new_node = Node.new(value)
 
@@ -34,7 +34,7 @@ class Tree
     
     if node.left.nil?
       if new_node.data > node.data
-        traverse(node.right, value)
+      insert(new_node.data, node.right)
       else
         node.left = new_node
         return
@@ -43,15 +43,17 @@ class Tree
 
     if node.right.nil?
       if new_node.data < node.data
-        traverse(node.left, value)
+      insert(new_node.data, node.left)
       else
         node.right = new_node
         return
       end
     end
-  end
-   
-  def insert(value)
-    traverse(@root, value)
+
+    if new_node.data < node.data
+      insert(new_node.data, node.left)
+    else
+      insert(new_node.data, node.right)
+    end
   end
 end
