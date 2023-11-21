@@ -131,4 +131,46 @@ class Tree
     
     level_order(q, result)
   end
+
+  def inorder(ref = @root, result = [])
+    return nil if ref.nil?
+
+    inorder(ref.left, result)
+    if block_given?
+      result << yield(ref.data)
+    else
+      result << ref.data
+    end
+    inorder(ref.right, result)
+
+    result
+  end
+
+  def preorder(ref = @root, result = [])
+    return nil if ref.nil?
+
+    if block_given?
+      result << yield(ref.data)
+    else
+      result << ref.data
+    end
+    preorder(ref.left)
+    preorder(ref.right)
+
+    result
+  end
+
+  def postorder(ref = @root, result = [])
+    return nil if ref.nil?
+
+    postorder(ref.left)
+    postorder(ref.right)
+    if block_given?
+      result << yield(ref.data)
+    else
+      result << ref.data
+    end
+
+    result
+  end
 end
