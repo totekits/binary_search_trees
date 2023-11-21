@@ -199,4 +199,14 @@ class Tree
       end
     end
   end
+
+  def balance?(ref = @root)
+    return true if ref.nil?
+
+    if (height(ref.left) - height(ref.right)).abs > 1
+      false
+    else
+      balance?(ref.left) && balance?(ref.right)
+    end
+  end
 end
