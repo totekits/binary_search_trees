@@ -173,4 +173,17 @@ class Tree
 
     result
   end
+
+  def height(node, h = 0)
+    return nil if node.nil?
+
+    if node.left.nil? && node.right.nil?
+      return h
+    else
+      left_h = height(node.left, h + 1)
+      right_h = height(node.right, h + 1)
+    end
+
+    return [left_h, right_h].max
+  end
 end
