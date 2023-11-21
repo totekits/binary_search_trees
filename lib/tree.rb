@@ -56,4 +56,47 @@ class Tree
       insert(new_node.data, node.right)
     end
   end
+
+  def find_min(ref)
+    return ref if ref.left.nil?
+    find_min(ref.left)
+  end
+
+  def delete(value, ref = @root, parent = nil)
+    return if ref.nil?
+
+    if value < ref.data 
+      delete(value, ref.left, ref)
+    elsif value > ref.data
+      delete(value, ref.right, ref)
+    else
+      if ref.left.nil? && ref.right.nil?
+        if parent.left == ref
+          parent.left = nil
+        else 
+          parent.right = nil
+        end
+      elsif ref.left.nil? && !ref.right.nil?
+        if parent.left == ref
+          parent.left = ref.right
+        else
+          parent.right = ref.right
+        end
+      elsif !ref.left.nil? && ref.right.nil?
+        if parent.left == ref
+          parent.left = ref.left
+        else
+          parent.right = ref.right
+        end
+      else
+        temp = find_min(ref.right)
+        if parent.left == ref
+          parent.left = temp
+        else
+          parent.right = temp
+        end
+        temp.left = ref.left
+      end
+    end
+  end
 end
