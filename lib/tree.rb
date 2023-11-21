@@ -209,4 +209,14 @@ class Tree
       balance?(ref.left) && balance?(ref.right)
     end
   end
+
+  def rebalance(tree)
+    if tree.balance?
+      return
+    else
+      arr = preorder(tree.root)
+      new_tree = build_tree(arr)
+      tree.root = new_tree.root
+    end
+  end
 end
