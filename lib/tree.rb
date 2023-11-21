@@ -99,4 +99,36 @@ class Tree
       end
     end
   end
+
+  def find(value, ref = @root)
+    return nil if ref.nil?
+
+    if value < ref.data
+      find(value, ref.left)
+    elsif value > ref.data
+      find(value, ref.right)
+    else
+      return ref
+    end
+
+    nil
+  end
+
+  def level_order(q = [@root], result = [])
+    return result if q.empty?
+
+    if block_given?
+      result << yield(q[0].data)
+      q << q[0].left if !q[0].left.nil?
+      q << q[0].right if !q[0].right.nil?
+      q.shift
+    else
+      result << q[0].data
+      q << q[0].left if !q[0].left.nil?
+      q << q[0].right if !q[0].right.nil?
+      q.shift
+    end
+    
+    level_order(q, result)
+  end
 end
