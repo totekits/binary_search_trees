@@ -175,15 +175,28 @@ class Tree
   end
 
   def height(node, h = 0)
-    return nil if node.nil?
-
-    if node.left.nil? && node.right.nil?
-      return h
+    if node.nil?
+      nil
+    elsif node.left.nil? && node.right.nil?
+      h
     else
       left_h = height(node.left, h + 1)
       right_h = height(node.right, h + 1)
+      [left_h, right_h].max
     end
+  end
 
-    return [left_h, right_h].max
+  def depth(node, ref = @root, d = 0)
+    if ref.nil? 
+      nil
+    elsif node == ref
+      d
+    else
+      if node.data < ref.data
+        depth(node, ref.left, d + 1)
+      else
+        depth(node, ref.right, d + 1)
+      end
+    end
   end
 end
