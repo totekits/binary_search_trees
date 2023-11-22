@@ -1,5 +1,6 @@
 class Tree
   require_relative 'node'
+  attr_accessor :root
 
   def initialize(array)
     @root = build_tree(array)
@@ -14,7 +15,7 @@ class Tree
     mid = arr.size / 2
     root = Node.new(arr[mid])
     root.left = build_tree(arr[0...mid])
-    root.right = build_tree(arr[mid..-1])
+    root.right = build_tree(arr[(mid + 1)..-1])
     root
   end
 
@@ -133,38 +134,38 @@ class Tree
   end
 
   def inorder(ref = @root, result = [])
-    return nil if ref.nil?
-
-    inorder(ref.left, result)
+    return if ref.nil?
+    
+    inorder(ref.left, result) if ref.left
     if block_given?
       result << yield(ref.data)
     else
       result << ref.data
     end
-    inorder(ref.right, result)
+    inorder(ref.right, result) if ref.right
 
     result
   end
-
+      
   def preorder(ref = @root, result = [])
-    return nil if ref.nil?
+    return if ref.nil?
 
     if block_given?
       result << yield(ref.data)
     else
       result << ref.data
     end
-    preorder(ref.left)
-    preorder(ref.right)
+    preorder(ref.left, result) if ref.left
+    preorder(ref.right, result) if ref.right
 
     result
   end
 
   def postorder(ref = @root, result = [])
-    return nil if ref.nil?
+    return if ref.nil?
 
-    postorder(ref.left)
-    postorder(ref.right)
+    postorder(ref.left, result) if ref.left
+    postorder(ref.right, result) if ref.right
     if block_given?
       result << yield(ref.data)
     else
@@ -176,7 +177,7 @@ class Tree
 
   def height(node, h = 0)
     if node.nil?
-      nil
+      0
     elsif node.left.nil? && node.right.nil?
       h
     else
@@ -207,16 +208,6 @@ class Tree
       false
     else
       balance?(ref.left) && balance?(ref.right)
-    end
-  end
-
-  def rebalance(tree)
-    if tree.balance?
-      return
-    else
-      arr = preorder(tree.root)
-      new_tree = build_tree(arr)
-      tree.root = new_tree.root
     end
   end
 end
